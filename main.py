@@ -1,17 +1,21 @@
 import pandas as pd
 
+import json
+
+import RegModel
+
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI,Request
 
-from DataModel import DataModel
+from sklearn.metrics import r2_score
 
-from joblib import load
+
 
 
 app = FastAPI()
 
-model = load("modelo.joblib")
+RegressionModel = RegModel.Model()
 
 
 
@@ -20,27 +24,24 @@ def read_root():
    return {"Hello": "World"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-   return {"item_id": item_id, "q": q}
 
 @app.post("/predict")
-def make_predictions(dataModel: DataModel):
+def make_predictions(dataModel: RegModel.DataModel):
     df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
-    df.columns = dataModel.columns()
-    prediction = model.predict(df)
-    return {
-       'prediction': prediction[0],
-    }
+    df.columns = RegModel.pred_columns()
+    prediction = RegressionModel.make_predictions(df)
+    return prediction.tolist()
 
-
-#@app.post("/rSquared")
-#def make_predictions(dataModel: DataModel):
-    df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
-    df.columns = dataModel.columns()
-    score = model.score(df.drop('Life expectancy', axis=1 ),df['Life expectancy'])
-    return {
-       'r2 score': score[0],
-    }
+@app.post("/rSquared")
+async def calculate_r2(request_body: Request):
+    request_info = await request_body.json()
+    json_str = json.dumps([js for js in request_info])
+    df = pd.read_json(json_str)
+    df.columns = RegModel.r2_columns()
+    x = df.drop('Life expectancy', axis=1)
+    y = df['Life expectancy']
+    y_pred = RegressionModel.make_predictions(x)
+    r2 = r2_score(y, y_pred)
+    return "'R^2: %.2f" % r2
 
 
