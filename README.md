@@ -1,7 +1,8 @@
 # Laboratorio4
-##Juan David Becerra - 201911588 - Pruebas Postman y analisis
-##Nicolas Chalee Guerrero - 201912737 - pipeline
-##Juan Andrés Santiago - 201821950 - API
+
+## Juan David Becerra - 201911588 - Pruebas Postman y analisis
+## Nicolas Chalee Guerrero - 201912737 - pipeline
+## Juan Andrés Santiago - 201821950 - API
 
 ## Instrucciones
 
