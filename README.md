@@ -1,4 +1,9 @@
 # Laboratorio4
+
+## Juan David Becerra - 201911588 - Pruebas Postman y analisis
+## Nicolas Chalee Guerrero - 201912737 - pipeline
+## Juan Andrés Santiago - 201821950 - API
+
 ## Instrucciones
 
 1. Ejecutar el siguiente comando en la terminal para instalar todas las librerias necesarias: pip3 install -r requirements.txt
